@@ -52,7 +52,7 @@ const sites = [
   },
   {
     name: '凝方科技官網',
-    image: 'http://www.fusquare.com/images/banner_home.jpg',
+    image: '/mega-websites/img/fusquare.png',
     url: 'http://www.fusquare.com/',
   },
 ]
