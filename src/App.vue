@@ -22,12 +22,12 @@ const sites = [
   },
   {
     name: '設備管理平臺',
-    image: '/img/cbos.png',
+    image: '/mega-websites/img/cbos.png',
     url: 'https://cbosv3.cloud-building.com/',
   },
   {
     name: 'MEGA2.0 系統',
-    image: '/img/mega.png',
+    image: '/mega-websites/img/mega.png',
     url: 'https://mega.cloud-building.com/',
   },
   {
@@ -37,12 +37,12 @@ const sites = [
   },
   {
     name: '太古地產能源管理',
-    image: '/img/swire.png',
+    image: '/mega-websites/img/swire.png',
     url: 'https://swire.enermon.cloud/',
   },
   {
     name: '裕華國際大廈能源管理',
-    image: '/img/yuehwa.png',
+    image: '/mega-websites/img/yuehwa.png',
     url: 'http://yuehwa.megabuilding.net/',
   },
   {
