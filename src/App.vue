@@ -1,15 +1,25 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useDark } from '@vueuse/core'
+
+interface Site {
+  name: string
+  image: string
+  url: string
+  abbreviation: string
+}
 
 const isDark = useDark()
 
+const sassSites = ref<Site[]>([])
+
 const sites = [
-  {
-    name: 'MEGA SASS 平臺',
-    image:
-      'https://cbosv3.oss-cn-hongkong.aliyuncs.com/saas/users/91/V2VjaGF0SU1HMzU5LmpwZw==?x-oss-process=image/resize,w_200',
-    url: 'https://saas.cloud-building.com/',
-  },
+  // {
+  //   name: 'MEGA SASS 平臺',
+  //   image:
+  //     'https://cbosv3.oss-cn-hongkong.aliyuncs.com/saas/users/91/V2VjaGF0SU1HMzU5LmpwZw==?x-oss-process=image/resize,w_200',
+  //   url: 'https://saas.cloud-building.com/',
+  // },
   {
     name: '書院管理系統',
     image: 'https://woosing.cloud-building.com/assets/login-home-ef73171b.jpg',
@@ -56,23 +66,26 @@ const sites = [
     url: 'http://www.fusquare.com/',
   },
 ]
+
+onMounted(() => {
+  // Fetch SASS sites from the API
+  fetch('https://saas.cloud-building.com/api/v1/bp/internal/public/listOrganization')
+    .then(response => response.json())
+    .then(data => {
+      sassSites.value = data.data.list.map((item: { name: string, abbreviation: string, image: string }) => ({
+        name: item.name,
+        image: `https://cbosv3.oss-cn-hongkong.aliyuncs.com/${item.image}?x-oss-process=image/resize,w_200`,
+        url: `https://saas.cloud-building.com/${item.abbreviation}`,
+        abbreviation: item.abbreviation,
+      }))
+    })
+    .catch(error => {
+      console.error('Error fetching SASS sites:', error)
+    })
+})
 </script>
 
 <template>
-  <!-- <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView /> -->
   <el-config-provider>
     <el-container>
       <el-header>
@@ -86,6 +99,31 @@ const sites = [
         </el-switch>
       </el-header>
       <el-main>
+        <h1 class="title">MEGA SASS 平臺 <el-link href="https://saas.cloud-building.com/" target="_blank"
+            type="primary">https://saas.cloud-building.com/</el-link></h1>
+        <el-row>
+          <el-col v-for="site in sassSites" :key="site.url" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+            <div class="card-wrapper">
+              <el-card>
+                <template #header>
+                  <div class="card-header">
+                    <span class="ellipsis">{{ site.name }}</span>
+                  </div>
+                </template>
+                <div class="image-wrapper">
+                  <img :src="site.image" loading="lazy" style="width: 100%; height: 100%" />
+                </div>
+                <template #footer>
+                  <el-link :href="site.url" target="_blank" type="primary">{{ `https://.../${site.abbreviation}`
+                  }}</el-link>
+                </template>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
+
+        <div style="height: 24px;"></div>
+        <h1 class="title">其它平臺</h1>
         <el-row>
           <el-col v-for="site in sites" :key="site.url" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
             <div class="card-wrapper">
@@ -111,6 +149,18 @@ const sites = [
 </template>
 
 <style scoped>
+.ellipsis {
+  display: inline-block;
+  /* 或 block，根据布局需要 */
+  max-width: 100%;
+  /* 设置最大宽度，根据实际需求调整 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  /* 可选，优化对齐 */
+}
+
 .card-wrapper {
   margin: 10px;
 }
@@ -132,67 +182,3 @@ const sites = [
   object-fit: cover;
 }
 </style>
-
-<!-- <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style> -->
