@@ -56,6 +56,11 @@ const sites = [
     url: 'http://yuehwa.megabuilding.net/',
   },
   {
+    name: '香港中文大學能源管理',
+    image: '/mega-websites/img/cuhk.png',
+    url: 'https://cuhk.enermon.cloud/',
+  },
+  {
     name: 'MEGA 官網',
     image: 'https://www.mega-automation.com/images/banner_home.png',
     url: 'https://www.mega-automation.com/',
@@ -70,16 +75,18 @@ const sites = [
 onMounted(() => {
   // Fetch SASS sites from the API
   fetch('https://saas.cloud-building.com/api/v1/bp/internal/public/listOrganization')
-    .then(response => response.json())
-    .then(data => {
-      sassSites.value = data.data.list.map((item: { name: string, abbreviation: string, image: string }) => ({
-        name: item.name,
-        image: `https://cbosv3.oss-cn-hongkong.aliyuncs.com/${item.image}?x-oss-process=image/resize,w_200`,
-        url: `https://saas.cloud-building.com/${item.abbreviation}`,
-        abbreviation: item.abbreviation,
-      }))
+    .then((response) => response.json())
+    .then((data) => {
+      sassSites.value = data.data.list.map(
+        (item: { name: string; abbreviation: string; image: string }) => ({
+          name: item.name,
+          image: `https://cbosv3.oss-cn-hongkong.aliyuncs.com/${item.image}?x-oss-process=image/resize,w_200`,
+          url: `https://saas.cloud-building.com/${item.abbreviation}`,
+          abbreviation: item.abbreviation,
+        }),
+      )
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('Error fetching SASS sites:', error)
     })
 })
@@ -99,8 +106,11 @@ onMounted(() => {
         </el-switch>
       </el-header>
       <el-main>
-        <h1 class="title">MEGA SASS 平臺 <el-link href="https://saas.cloud-building.com/" target="_blank"
-            type="primary">https://saas.cloud-building.com/</el-link></h1>
+        <h1 class="title">
+          MEGA SASS 平臺
+          <el-link href="https://saas.cloud-building.com/" target="_blank"
+            type="primary">https://saas.cloud-building.com/</el-link>
+        </h1>
         <el-row>
           <el-col v-for="site in sassSites" :key="site.url" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
             <div class="card-wrapper">
@@ -114,15 +124,16 @@ onMounted(() => {
                   <img :src="site.image" loading="lazy" style="width: 100%; height: 100%" />
                 </div>
                 <template #footer>
-                  <el-link :href="site.url" target="_blank" type="primary">{{ `https://.../${site.abbreviation}`
-                  }}</el-link>
+                  <el-link :href="site.url" target="_blank" type="primary">{{
+                    `https://.../${site.abbreviation}`
+                    }}</el-link>
                 </template>
               </el-card>
             </div>
           </el-col>
         </el-row>
 
-        <div style="height: 24px;"></div>
+        <div style="height: 24px"></div>
         <h1 class="title">其它平臺</h1>
         <el-row>
           <el-col v-for="site in sites" :key="site.url" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
